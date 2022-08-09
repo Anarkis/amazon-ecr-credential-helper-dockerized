@@ -22,4 +22,4 @@ RUN chmod +x /src/entrypoint.sh
 ENV DOCKER_HOST=unix:///var/run/docker.sock
 ENV METHOD=get \
     AWS_ECR_DISABLE_CACHE=True
-ENTRYPOINT ["/bin/sh", "/src/entrypoint.sh"] 
+ENTRYPOINT ["/bin/sh", "dockerd-entrypoint.sh", "/bin/drone-docker"]
