@@ -9,7 +9,7 @@ steps:
     path: /var/run/docker.sock
   settings:
     dockerfile: Docker/Dockerfile.amd64 
-    tag: ${DRONE_TAG}
+    tag: ${DRONE_TAG}-linux-amd64
     username:
       from_secret: docker_username
     password:
@@ -22,32 +22,6 @@ steps:
     event:
     #- push
     - tag
-
-volumes:
-- name: docker
-  host:
-    path: /var/run/docker.sock
-
----
-kind: pipeline
-name: manifest
-
-steps:
-#- name: manifest
-  #image: plugins/manifest
-  #settings:
-    #username:
-      #from_secret: docker_username
-    #password:
-      #from_secret: docker_password
-    #spec: manifest.tmpl
-  #when:
-    #instance:
-      #include:
-      #- drone-publish.rancher.io
-    #event:
-    ##- push
-    #- tag
 
 - name: push-manifest
   image: plugins/manifest
