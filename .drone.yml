@@ -23,6 +23,16 @@ steps:
     #- push
     - tag
 
+volumes:
+- name: docker
+  host:
+    path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: manifest
+
+steps:
 - name: manifest
   image: plugins/manifest
   settings:
@@ -31,7 +41,7 @@ steps:
     password:
       from_secret: docker_password
     spec: manifest.tmpl
-    target: luistt/drone-prime-publish:${DRONE_TAG}
+    #target: luistt/drone-prime-publish:${DRONE_TAG}
     template: luistt/drone-prime-publish:${DRONE_TAG}-OS-ARCH
     platforms:
       - linux/amd64
