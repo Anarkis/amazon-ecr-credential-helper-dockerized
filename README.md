@@ -1,2 +1,2 @@
 # amazon-ecr-credential-helper-dockerized
-Test 2
+Test 3
