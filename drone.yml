@@ -1,0 +1,44 @@
+kind: pipeline
+name: default
+steps:
+- name: publish-amd64
+  image: plugins/docker
+  environment:
+  volumes:
+  - name: docker
+    path: /var/run/docker.sock
+  settings:
+    dockerfile: Docker/Dockerfile.amd64 
+    tag: prime
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    repo: luistt/drone-prime-publish
+
+- name: manifest
+  image: plugins/manifest
+  settings:
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    spec: manifest.tmpl
+    #target: foo/bar:v1.0.0
+    #template: foo/bar:v1.0.0-OS-ARCH
+    #platforms:
+      #- linux/amd64
+      #- linux/arm
+      #- linux/arm64V
+  when:
+    instance:
+      include:
+      - drone-publish.rancher.io
+    event:
+    - push
+    - tag
+
+volumes:
+- name: docker
+  host:
+    path: /var/run/docker.sock
