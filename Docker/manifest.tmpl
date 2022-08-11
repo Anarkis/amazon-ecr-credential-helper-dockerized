@@ -1,12 +1,7 @@
-image: luistt/drone-prime-publish:{{#if build.tag}}{{trimPrefix "v" build.tag}}{{else}}latest{{/if}}
-{{#if build.tags}}
-tags:
-{{#each build.tags}}
-  - {{this}}
-{{/each}}
-{{/if}}
+image: luistt/drone-prime-publish:{{#if build.tag}}{{build.tag}}{{else}}{{replace "release/" "" build.branch }}-{{build.commit}}{{/if}}
 manifests:
-  - image: luistt/drone-prime-publish:{{#if build.tag}}{{trimPrefix "v" build.tag}}-{{/if}}linux-amd64
+  -
+    image: luistt/drone-prime-publish:{{#if build.tag}}{{build.tag}}{{else}}{{replace "release/" "" build.branch }}-{{build.commit}}{{/if}}-linux-amd64
     platform:
       architecture: amd64
       os: linux
