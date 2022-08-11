@@ -5,3 +5,8 @@ manifests:
     platform:
       architecture: amd64
       os: linux
+  -
+    image: luistt/drone-prime-publish:{{#if build.tag}}{{build.tag}}{{else}}{{replace "release/" "" build.branch }}-{{build.commit}}{{/if}}-linux-arm64
+    platform:
+      architecture: arm64
+      os: linux
