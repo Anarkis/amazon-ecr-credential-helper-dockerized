@@ -1,5 +1,11 @@
+---
 kind: pipeline
-name: default
+name: build-amd64
+
+platform:
+  os: linux
+  arch: amd64
+
 steps:
 - name: publish-amd64
   image: plugins/docker
@@ -23,6 +29,20 @@ steps:
     #- push
     - tag
 
+volumes:
+- name: docker
+  host:
+    path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: build-arm64
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
 - name: publish-arm64
   image: plugins/docker
   environment:
@@ -45,6 +65,16 @@ steps:
     #- push
     - tag
 
+volumes:
+- name: docker
+  host:
+    path: /var/run/docker.sock
+
+---
+kind: pipeline
+name: manifest
+
+steps:
 - name: push-manifest
   image: plugins/manifest
   settings:
@@ -59,6 +89,10 @@ steps:
       - drone-publish.rancher.io
     event:
     - tag
+
+depends_on:
+- build-amd64 
+- build-arm64
 
 volumes:
 - name: docker
