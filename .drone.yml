@@ -33,7 +33,23 @@ kind: pipeline
 name: manifest
 
 steps:
-- name: manifest
+#- name: manifest
+  #image: plugins/manifest
+  #settings:
+    #username:
+      #from_secret: docker_username
+    #password:
+      #from_secret: docker_password
+    #spec: manifest.tmpl
+  #when:
+    #instance:
+      #include:
+      #- drone-publish.rancher.io
+    #event:
+    ##- push
+    #- tag
+
+- name: push-manifest
   image: plugins/manifest
   settings:
     username:
@@ -41,18 +57,11 @@ steps:
     password:
       from_secret: docker_password
     spec: manifest.tmpl
-    #target: luistt/drone-prime-publish:${DRONE_TAG}
-    template: luistt/drone-prime-publish:${DRONE_TAG}-OS-ARCH
-    platforms:
-      - linux/amd64
-      #- linux/arm
-      #- linux/arm64V
   when:
     instance:
       include:
       - drone-publish.rancher.io
     event:
-    #- push
     - tag
 
 volumes:
