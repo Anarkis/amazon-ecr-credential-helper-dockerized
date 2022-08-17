@@ -20,4 +20,4 @@ COPY config.json /root/.docker/config.json
 ENV DOCKER_HOST=unix:///var/run/docker.sock
 ENV METHOD=get \
     AWS_ECR_DISABLE_CACHE=True
-ENTRYPOINT ["/bin/sh", "dockerd-entrypoint.sh", "/bin/drone-docker"]
+ENTRYPOINT ["/usr/local/bin/dockerd-entrypoint.sh", "/bin/drone-docker"]
