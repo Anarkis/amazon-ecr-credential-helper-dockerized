@@ -72,6 +72,43 @@ volumes:
 
 ---
 kind: pipeline
+name: build-windows-amd64-1809
+
+platform:
+  os: windows
+  arch: amd64
+  version: 1809
+
+steps:
+- name: publish-windows-1809-amd64
+  image: plugins/docker
+  environment:
+  volumes:
+  - name: docker
+    path: /var/run/docker.sock
+  settings:
+    dockerfile: Docker/Dockerfile.windows.amd64.1809
+    tag: ${DRONE_TAG}-windows-1809-amd64
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+    repo: luistt/drone-prime-publish
+  when:
+    instance:
+      include:
+      - drone-publish.rancher.io
+    event:
+    #- push
+    - tag
+
+volumes:
+- name: docker
+  host:
+    path: /var/run/docker.sock
+
+---
+kind: pipeline
 name: manifest
 
 steps:
@@ -93,6 +130,7 @@ steps:
 depends_on:
 - build-amd64 
 - build-arm64
+- build-windows-amd64-1809
 
 volumes:
 - name: docker
