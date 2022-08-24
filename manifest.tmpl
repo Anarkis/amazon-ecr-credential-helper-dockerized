@@ -10,3 +10,9 @@ manifests:
     platform:
       architecture: arm64
       os: linux
+  -
+    image: luistt/drone-prime-publish:{{#if build.tag}}{{build.tag}}{{else}}{{replace "release/" "" build.branch }}-{{build.commit}}{{/if}}-windows-1809-amd64
+    platform:
+      architecture: amd64
+      os: windows
+      version: 1809
